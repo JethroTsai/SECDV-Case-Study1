@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import javax.swing.WindowConstants;
+import java.awt.Color;
 
 public class Frame extends javax.swing.JFrame {
 
@@ -211,6 +212,7 @@ public class Frame extends javax.swing.JFrame {
     private ManagerHome managerHomePnl = new ManagerHome();
     private StaffHome staffHomePnl = new StaffHome();
     private ClientHome clientHomePnl = new ClientHome();
+    private Home disabledHomePnl = new Home("Disabled", Color.RED);
     
     private CardLayout contentView = new CardLayout();
     private CardLayout frameView = new CardLayout();
@@ -240,11 +242,40 @@ public class Frame extends javax.swing.JFrame {
         Content.add(managerHomePnl, "managerHomePnl");
         Content.add(staffHomePnl, "staffHomePnl");
         Content.add(clientHomePnl, "clientHomePnl");
-        
+        Content.add(disabledHomePnl, "disabledHomePnl");
+            
         this.setVisible(true);
     }
     
-    public void mainNav(){
+    public void mainNav(int role){
+        
+        adminBtn.setVisible(false);
+        managerBtn.setVisible(false);
+        staffBtn.setVisible(false);
+        clientBtn.setVisible(false);
+        
+        switch(role) {
+            case 1:
+                contentView.show(Content, "disabledHomePnl");
+                break;
+           case 2:
+                clientBtn.setVisible(true);
+                contentView.show(Content, "clientHomePnl");
+               break;
+           case 3:
+               staffBtn.setVisible(true);
+               contentView.show(Content, "staffHomePnl");
+               break;
+           case 4:
+               managerBtn.setVisible(true);
+               contentView.show(Content, "managerHomePnl");
+               break;
+           case 5:
+               adminBtn.setVisible(true);
+               contentView.show(Content, "adminHomePnl");
+        }
+        
+        
         frameView.show(Container, "homePnl");
     }
     
