@@ -147,9 +147,6 @@ public class Login extends javax.swing.JPanel {
         else {
             jLabel2.setVisible(false);
             int index = usernames.indexOf(usernameFld.getText());
-            
-            System.out.println("Text Input: " + usernameFld.getText()+ " " + passwordFld.getText());
-            System.out.println("Actual: " + usernames.get(index)+ " " + passwords.get(index));
 
             if(passwords.get(index).equals(passwordFld.getText())) {
                 //login
