@@ -135,16 +135,21 @@ public class Login extends javax.swing.JPanel {
         jLabel2.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-
+        int index = usernames.indexOf(usernameFld.getText());
+        
         // authentication
         if (!usernames.contains(usernameFld.getText())){
             //error message
             System.out.println("Login failed; Invalid user ID or password");
             jLabel2.setVisible(true);
         }
+        else if (locks.get(index) > 3) {
+            System.out.println("Locked out");
+            frame.mainNav(1);
+        }
         else {
             jLabel2.setVisible(false);
-            int index = usernames.indexOf(usernameFld.getText());
+            
 
             if(passwords.get(index).equals(passwordFld.getText())) {
                 //login
@@ -155,7 +160,9 @@ public class Login extends javax.swing.JPanel {
                 // error message    
                 System.out.println("Login failed; Invalid user ID or password");
                 jLabel2.setVisible(true);
-                locks.get(index);
+                System.out.println("Before Locks: " + locks.get(index));
+                locks.set(index, locks.get(index) + 1);
+                System.out.println("After Locks: " + locks.get(index));
             }
         }    
         
