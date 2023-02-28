@@ -8,10 +8,27 @@ import java.util.ArrayList;
 public class Login extends javax.swing.JPanel {
 
     public Frame frame;
-    public SQLite sqlite;
+    public SQLite sqlite = new SQLite();
+    public ArrayList<User> users = sqlite.getUsers();
+    public ArrayList<String> usernames = new ArrayList<>();
+    public ArrayList<String> passwords = new ArrayList<>();
+    public ArrayList<Integer> roles = new ArrayList<>();
+    public ArrayList<Integer> locks = new ArrayList<>();
     
     public Login() {
         initComponents();
+
+        String e = usernameFld.getText();
+        System.out.println(e);
+        
+        // get username and password of users
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            usernames.add(user.getUsername());
+            passwords.add(user.getPassword());
+            roles.add(user.getRole());
+            locks.add(user.getLocked());
+        }
         
         jLabel2.setVisible(false);
     }
@@ -119,25 +136,6 @@ public class Login extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
 
-        sqlite = new SQLite();
-        ArrayList<User> users = sqlite.getUsers();
-        ArrayList<String> usernames = new ArrayList<>();
-        ArrayList<String> passwords = new ArrayList<>();
-        ArrayList<Integer> roles = new ArrayList<>();
-        ArrayList<Integer> locks = new ArrayList<>();
-        
-        String e = usernameFld.getText();
-        System.out.println(e);
-        
-        // get username and password of users
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            usernames.add(user.getUsername());
-            passwords.add(user.getPassword());
-            roles.add(user.getRole());
-            locks.add(user.getLocked());
-        }
-        
         // authentication
         if (!usernames.contains(usernameFld.getText())){
             //error message
@@ -157,6 +155,7 @@ public class Login extends javax.swing.JPanel {
                 // error message    
                 System.out.println("Login failed; Invalid user ID or password");
                 jLabel2.setVisible(true);
+                locks.get(index);
             }
         }    
         
