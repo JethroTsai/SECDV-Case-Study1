@@ -1,10 +1,14 @@
 
 package View;
 
+import static Controller.Main.getSHA;
+import static Controller.Main.toHexString;
 import Controller.SQLite;
 import Model.User;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+
 
 public class Register extends javax.swing.JPanel {
 
@@ -178,15 +182,21 @@ public class Register extends javax.swing.JPanel {
             }
         }
         if (upperFlag && lowerFlag && digitFlag && specialFlag) {
-            sqlite.addUser(username, password, 2);
-            users = sqlite.getUsers();
-            Login.usernames.add(username);
-            Login.passwords.add(password);
-            Login.roles.add(2);
-            frame.loginNav();
-            confpassFld.setText("");
-            passwordFld.setText("");
-            usernameFld.setText("");
+            try {
+                String hashedPassword = toHexString(getSHA(password));
+                sqlite.addUser(username, hashedPassword, 2);
+                users = sqlite.getUsers();
+                Login.usernames.add(username);
+                Login.passwords.add(hashedPassword);
+                Login.roles.add(2);
+                frame.loginNav();
+                confpassFld.setText("");
+                passwordFld.setText("");
+                usernameFld.setText("");
+            }
+            catch (NoSuchAlgorithmException e) {
+            System.out.println("Exception thrown for incorrect algorithm: " + e);
+        }
         }
         else {
             System.out.println("password does not follow the guidelines");

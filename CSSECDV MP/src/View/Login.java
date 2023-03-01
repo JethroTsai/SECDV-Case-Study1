@@ -1,6 +1,7 @@
 
 package View;
 
+import static Controller.Main.verifyPassword;
 import Controller.SQLite;
 import Model.User;
 import java.util.ArrayList;
@@ -166,14 +167,12 @@ public class Login extends javax.swing.JPanel {
         else {
             jLabel2.setVisible(false);
             
-
-            if(passwords.get(index).equals(passwordFld.getText())) {
+            if (verifyPassword(passwordFld.getText(), passwords.get(index))) {
                 //login
                 frame.mainNav(roles.get(index));
                 passwordFld.setText("");
                 usernameFld.setText(""); 
             }
-                
             else {
                 // error message    
                 System.out.println("Login failed; Invalid user ID or password");
