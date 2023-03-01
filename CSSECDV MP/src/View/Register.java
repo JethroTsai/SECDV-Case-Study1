@@ -4,6 +4,7 @@ package View;
 import Controller.SQLite;
 import Model.User;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class Register extends javax.swing.JPanel {
 
@@ -155,9 +156,11 @@ public class Register extends javax.swing.JPanel {
         }
         else if (passwordFld.getText().length() < 11) {
             System.out.println("Password must be at least 11 characters long");
+            JOptionPane.showMessageDialog(null, "Password must be at least 11 characters long", "Invalid password", JOptionPane.INFORMATION_MESSAGE);
         }
         else if (!password.equals(confpass)) {
             System.out.println("passwords do not match");
+            JOptionPane.showMessageDialog(null, "passwords do not match", "Invalid password", JOptionPane.INFORMATION_MESSAGE);
         }
         else {
             for (int i=0; i < password.length(); i++ ) {
@@ -181,6 +184,7 @@ public class Register extends javax.swing.JPanel {
         }
         else {
             System.out.println("password does not follow the guidelines");
+            JOptionPane.showMessageDialog(null, "password does not follow the guidelines", "Invalid password", JOptionPane.INFORMATION_MESSAGE);
         }
         if (!usernames.contains(usernameFld.getText())){ 
             jLabel2.setVisible(false);
