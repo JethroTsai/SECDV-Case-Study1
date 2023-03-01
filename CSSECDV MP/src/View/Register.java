@@ -146,8 +146,6 @@ public class Register extends javax.swing.JPanel {
         Boolean lowerFlag = false;
         Boolean digitFlag = false;
         Boolean specialFlag = false;
-                
-        int index = usernames.indexOf(usernameFld.getText());
         
         // authentication
         if (usernames.contains(usernameFld.getText())){
@@ -180,6 +178,12 @@ public class Register extends javax.swing.JPanel {
             confpassFld.setText("");
             passwordFld.setText("");
             usernameFld.setText("");
+        }
+        else {
+            System.out.println("password does not follow the guidelines");
+        }
+        if (!usernames.contains(usernameFld.getText())){ 
+            jLabel2.setVisible(false);
         }
     }//GEN-LAST:event_registerBtnActionPerformed
 
