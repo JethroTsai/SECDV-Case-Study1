@@ -10,26 +10,14 @@ public class Login extends javax.swing.JPanel {
     public Frame frame;
     public SQLite sqlite = new SQLite();
     public ArrayList<User> users = sqlite.getUsers();
-    public ArrayList<String> usernames = new ArrayList<>();
-    public ArrayList<String> passwords = new ArrayList<>();
-    public ArrayList<Integer> roles = new ArrayList<>();
+    public static ArrayList<String> usernames = new ArrayList<>();
+    public static ArrayList<String> passwords = new ArrayList<>();
+    public static ArrayList<Integer> roles = new ArrayList<>();
     public ArrayList<Integer> locks = new ArrayList<>();
     
     public Login() {
         initComponents();
-
-        String e = usernameFld.getText();
-        System.out.println(e);
-        
-        // get username and password of users
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            usernames.add(user.getUsername());
-            passwords.add(user.getPassword());
-            roles.add(user.getRole());
-            locks.add(user.getLocked());
-        }
-        
+  
         jLabel2.setVisible(false);
     }
 
@@ -152,6 +140,17 @@ public class Login extends javax.swing.JPanel {
         jLabel2.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
+        String e = usernameFld.getText();
+        System.out.println(e);
+        
+        // get username and password of users
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            usernames.add(user.getUsername());
+            passwords.add(user.getPassword());
+            roles.add(user.getRole());
+            locks.add(user.getLocked());
+        }
         int index = usernames.indexOf(usernameFld.getText());
         
         // authentication
@@ -171,6 +170,8 @@ public class Login extends javax.swing.JPanel {
             if(passwords.get(index).equals(passwordFld.getText())) {
                 //login
                 frame.mainNav(roles.get(index));
+                passwordFld.setText("");
+                usernameFld.setText(""); 
             }
                 
             else {
@@ -181,11 +182,7 @@ public class Login extends javax.swing.JPanel {
                 locks.set(index, locks.get(index) + 1);
                 System.out.println("After Locks: " + locks.get(index));
             }
-        }    
-        
-        
-       passwordFld.setText("");
-       usernameFld.setText(""); 
+        }           
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed

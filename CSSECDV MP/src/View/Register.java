@@ -39,7 +39,6 @@ public class Register extends javax.swing.JPanel {
         confpassFld = new javax.swing.JPasswordField();
         backBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
 
         registerBtn.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -78,10 +77,11 @@ public class Register extends javax.swing.JPanel {
             }
         });
 
+        jTextArea1.setEditable(false);
         jTextArea1.setBackground(new java.awt.Color(242, 242, 242));
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("Password must be:\n- at least 11 characters long\n- have at least:\n  - 1 uppercase character\n  - 1 lowercase character\n  - 1 special character (!@$#)\n  - 1 number");
+        jTextArea1.setText("Password must be:\n- at least 11 characters long\n- have at least:\n  - 1 uppercase character\n  - 1 lowercase character\n  - 1 special character (!@$#%_=)\n  - 1 number");
         jScrollPane1.setViewportView(jTextArea1);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -141,6 +141,7 @@ public class Register extends javax.swing.JPanel {
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
         frame.registerAction(usernameFld.getText(), passwordFld.getText(), confpassFld.getText());
+        String username = usernameFld.getText();
         String password = passwordFld.getText();
         String confpass = confpassFld.getText();
         Boolean upperFlag = false;
@@ -171,12 +172,17 @@ public class Register extends javax.swing.JPanel {
                     lowerFlag = true;
                 else if(Character.isDigit(c)) 
                     digitFlag = true;     
-                if(c == '$' || c == '#' || c == '?' || c == '!' || c == '_' || c == '=' || c == '%'){
+                if(c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '_' || c =='='){
                     specialFlag = true;
                 }                    
             }
         }
         if (upperFlag && lowerFlag && digitFlag && specialFlag) {
+            sqlite.addUser(username, password, 2);
+            users = sqlite.getUsers();
+            Login.usernames.add(username);
+            Login.passwords.add(password);
+            Login.roles.add(2);
             frame.loginNav();
             confpassFld.setText("");
             passwordFld.setText("");
@@ -205,7 +211,7 @@ public class Register extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    protected static final javax.swing.JTextArea jTextArea1 = new javax.swing.JTextArea();
     private javax.swing.JTextField passwordFld;
     private javax.swing.JButton registerBtn;
     private javax.swing.JTextField usernameFld;
