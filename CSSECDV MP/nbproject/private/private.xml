@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Kyle%20Chua/Documents/School/4th%20Year%20-%202nd%20Term/CS%20SECDV/Case%20Study%201%20Project/SECDV-Case-Study1/CSSECDV%20MP/src/Model/User.java</file>
-            <file>file:/C:/Users/Kyle%20Chua/Documents/School/4th%20Year%20-%202nd%20Term/CS%20SECDV/Case%20Study%201%20Project/SECDV-Case-Study1/CSSECDV%20MP/src/View/Frame.java</file>
-            <file>file:/C:/Users/Kyle%20Chua/Documents/School/4th%20Year%20-%202nd%20Term/CS%20SECDV/Case%20Study%201%20Project/SECDV-Case-Study1/CSSECDV%20MP/src/View/Register.java</file>
-            <file>file:/C:/Users/Kyle%20Chua/Documents/School/4th%20Year%20-%202nd%20Term/CS%20SECDV/Case%20Study%201%20Project/SECDV-Case-Study1/CSSECDV%20MP/src/Controller/SQLite.java</file>
-            <file>file:/C:/Users/Kyle%20Chua/Documents/School/4th%20Year%20-%202nd%20Term/CS%20SECDV/Case%20Study%201%20Project/SECDV-Case-Study1/CSSECDV%20MP/src/View/Login.java</file>
+            <file>file:/C:/Users/tsaij/Documents/College/4th_Year_2/CSSECDV/Case%20Study%201/CSSECDV%20Case%20Study%201/SECDV-Case-Study1/CSSECDV%20MP/src/View/Register.java</file>
+            <file>file:/C:/Users/tsaij/Documents/College/4th_Year_2/CSSECDV/Case%20Study%201/CSSECDV%20Case%20Study%201/SECDV-Case-Study1/CSSECDV%20MP/src/View/Login.java</file>
+            <file>file:/C:/Users/tsaij/Documents/College/4th_Year_2/CSSECDV/Case%20Study%201/CSSECDV%20Case%20Study%201/SECDV-Case-Study1/CSSECDV%20MP/src/Controller/Main.java</file>
+            <file>file:/C:/Users/tsaij/Documents/College/4th_Year_2/CSSECDV/Case%20Study%201/CSSECDV%20Case%20Study%201/SECDV-Case-Study1/CSSECDV%20MP/src/Controller/SQLite.java</file>
         </group>
     </open-files>
 </project-private>

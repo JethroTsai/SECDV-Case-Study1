@@ -26,7 +26,7 @@ public class Register extends javax.swing.JPanel {
         System.out.println(e);
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
-            usernames.add(user.getUsername());
+            usernames.add(user.getUsername().toLowerCase());
         }
         
         jLabel2.setVisible(false);
@@ -146,6 +146,7 @@ public class Register extends javax.swing.JPanel {
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
         frame.registerAction(usernameFld.getText(), passwordFld.getText(), confpassFld.getText());
         String username = usernameFld.getText();
+        String lowerUsername = username.toLowerCase();
         String password = passwordFld.getText();
         String confpass = confpassFld.getText();
         Boolean upperFlag = false;
@@ -154,7 +155,7 @@ public class Register extends javax.swing.JPanel {
         Boolean specialFlag = false;
         
         // authentication
-        if (usernames.contains(usernameFld.getText())){
+        if (usernames.contains(lowerUsername)){
             //error message
             System.out.println("Username Already Taken");
             jLabel2.setVisible(true);
@@ -176,7 +177,7 @@ public class Register extends javax.swing.JPanel {
                     lowerFlag = true;
                 else if(Character.isDigit(c)) 
                     digitFlag = true;     
-                if(c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '_' || c =='='){
+                if((c >= 33 && c <= 47) || (c >= 58 && c <= 64) || (c >= 91 || c <= 96)){
                     specialFlag = true;
                 }                    
             }
@@ -196,13 +197,14 @@ public class Register extends javax.swing.JPanel {
             }
             catch (NoSuchAlgorithmException e) {
             System.out.println("Exception thrown for incorrect algorithm: " + e);
+            }
         }
-        }
+        else if (usernames.contains(lowerUsername)) {}
         else {
             System.out.println("password does not follow the guidelines");
             JOptionPane.showMessageDialog(null, "password does not follow the guidelines", "Invalid password", JOptionPane.INFORMATION_MESSAGE);
         }
-        if (!usernames.contains(usernameFld.getText())){ 
+        if (!usernames.contains(usernameFld.getText().toLowerCase())){ 
             jLabel2.setVisible(false);
         }
     }//GEN-LAST:event_registerBtnActionPerformed

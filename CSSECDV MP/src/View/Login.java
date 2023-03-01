@@ -147,15 +147,15 @@ public class Login extends javax.swing.JPanel {
         // get username and password of users
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
-            usernames.add(user.getUsername());
+            usernames.add(user.getUsername().toLowerCase());
             passwords.add(user.getPassword());
             roles.add(user.getRole());
             locks.add(user.getLocked());
         }
-        int index = usernames.indexOf(usernameFld.getText());
+        int index = usernames.indexOf(usernameFld.getText().toLowerCase());
         
         // authentication
-        if (!usernames.contains(usernameFld.getText())){
+        if (!usernames.contains(usernameFld.getText().toLowerCase())){
             //error message
             System.out.println("Login failed; Invalid user ID or password");
             jLabel2.setVisible(true);
