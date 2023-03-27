@@ -49,7 +49,7 @@ public class ManagerHome extends javax.swing.JPanel {
 //        historyBtn.setVisible(false);
           usersBtn.setVisible(false);
 //        productsBtn.setVisible(false);
-//        logsBtn.setVisible(false);
+          logsBtn.setVisible(false);
     }
     
     public void showPnl(String panelName){
@@ -166,6 +166,7 @@ public class ManagerHome extends javax.swing.JPanel {
 
     private void productsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsBtnActionPerformed
         mgmtProduct.init();
+        mgmtProduct.showManagerBtn();
         usersBtn.setForeground(Color.black);
         productsBtn.setForeground(Color.red);
         historyBtn.setForeground(Color.black);
