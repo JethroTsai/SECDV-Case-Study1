@@ -46,7 +46,7 @@ public class StaffHome extends javax.swing.JPanel {
         Content.add(mgmtLogs, "mgmtLogs");
         
 //        UNCOMMENT TO DISABLE BUTTONS
-//        historyBtn.setVisible(false);
+          historyBtn.setVisible(false);
           usersBtn.setVisible(false);
 //        productsBtn.setVisible(false);
           logsBtn.setVisible(false);
@@ -166,6 +166,7 @@ public class StaffHome extends javax.swing.JPanel {
 
     private void productsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsBtnActionPerformed
         mgmtProduct.init();
+        mgmtProduct.showStaffBtn();
         usersBtn.setForeground(Color.black);
         productsBtn.setForeground(Color.red);
         historyBtn.setForeground(Color.black);
