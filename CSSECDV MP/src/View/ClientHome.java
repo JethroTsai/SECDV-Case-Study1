@@ -46,7 +46,7 @@ public class ClientHome extends javax.swing.JPanel {
         Content.add(mgmtLogs, "mgmtLogs");
         
 //        UNCOMMENT TO DISABLE BUTTONS
-          historyBtn.setVisible(false);
+//        historyBtn.setVisible(false);
           usersBtn.setVisible(false);
 //        productsBtn.setVisible(false);
           logsBtn.setVisible(false);
@@ -166,6 +166,7 @@ public class ClientHome extends javax.swing.JPanel {
 
     private void productsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsBtnActionPerformed
         mgmtProduct.init();
+        mgmtProduct.showClientBtn();
         usersBtn.setForeground(Color.black);
         productsBtn.setForeground(Color.red);
         historyBtn.setForeground(Color.black);
@@ -191,7 +192,7 @@ public class ClientHome extends javax.swing.JPanel {
         contentView.show(Content, "mgmtLogs");
     }//GEN-LAST:event_logsBtnActionPerformed
     
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Content;
