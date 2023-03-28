@@ -179,6 +179,29 @@ public class SQLite {
         }
     }
     
+    public void editProduct(int id, String name, int stock, float price){
+        String sql = "UPDATE product " + "SET name = '"+ name + "'," + "stock = '" + stock +  "' ," + "price = '"+ price + "' " + "WHERE id = '" + id + "' ;";
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()){
+            stmt.execute(sql);
+
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+    
+    public void deleteProduct(String name) {
+        String sql = "DELETE FROM product WHERE name='" + name + "';";
+        
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()){
+            stmt.execute(sql);
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+        
     public void addUser(String username, String password) {
         String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + password + "')";
         
