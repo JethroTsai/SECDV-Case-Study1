@@ -168,6 +168,17 @@ public class SQLite {
         }
     }
     
+    public void subtractStock(String name, int stock){
+        String sql = "UPDATE product " + "SET stock = stock - '" + stock + "'" + "WHERE name = '" + name + "' ;";
+        
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()){
+            stmt.execute(sql);  
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+    
     public void addProduct(String name, int stock, double price) {
         String sql = "INSERT INTO product(name,stock,price) VALUES('" + name + "','" + stock + "','" + price + "')";
         

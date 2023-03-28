@@ -28,7 +28,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     public SQLite sqlite;
     public DefaultTableModel tableModel;
     private User active;
-    private static final Pattern QTY_pattern = Pattern.compile("^[1-9]\\d*$");
+    private static final Pattern stock_pattern = Pattern.compile("^[1-9]\\d*$");
     private static final Pattern price_pattern= Pattern.compile("^(\\d)+(\\.\\d{1,2})*$");
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
     private static final Pattern prodName_pattern= Pattern.compile("^[a-zA-Z0-9\\s\\_\\-]+$");
@@ -185,6 +185,9 @@ public class MgmtProduct extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void purchaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseBtnActionPerformed
+        int stock;
+        float price;
+        
         if(table.getSelectedRow() >= 0){
             JTextField stockFld = new JTextField("0");
             designer(stockFld, "PRODUCT STOCK");
@@ -197,6 +200,29 @@ public class MgmtProduct extends javax.swing.JPanel {
 
             if (result == JOptionPane.OK_OPTION) {
                 System.out.println(stockFld.getText());
+                if(stock_pattern.matcher(stockFld.getText()).matches()) //check if valid format (positive integer)
+                {
+                    stock = Integer.parseInt(stockFld.getText());
+                    price = Float.parseFloat(tableModel.getValueAt(table.getSelectedRow(), 2).toString());
+                    
+                    if (stock <= Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 1).toString()) )
+                    {
+                        sqlite.subtractStock(tableModel.getValueAt(table.getSelectedRow(), 0).toString(), stock);
+                        
+                        LocalDateTime now = LocalDateTime.now();  
+                        sqlite.addHistory(this.active.getUsername(), tableModel.getValueAt(table.getSelectedRow(), 0).toString(), stock, dtf.format(now));
+                        this.init();
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null,"quantity not enough for value entered");  
+                    } 
+                }
+                else
+                {
+                    System.out.println("invalid format");
+                    JOptionPane.showMessageDialog(null,"invalid amount");  
+                }
             }
         }
     }//GEN-LAST:event_purchaseBtnActionPerformed
@@ -226,25 +252,23 @@ public class MgmtProduct extends javax.swing.JPanel {
                 }
              }
 
-            //check if valid integer
-            if (!QTY_pattern.matcher(stockFld.getText()).matches()){
+            // if valid integer
+            if (!stock_pattern.matcher(stockFld.getText()).matches()){
                 flag = false;
             }
-            // check if valid price 
+            // if valid price 
             if (!price_pattern.matcher(priceFld.getText()).matches()){
                 flag = false;
             }
-            // check if valid product name (whitelisting )
+            // if valid product name (whitelisting )
             if (!prodName_pattern.matcher(nameFld.getText()).matches()){
                 flag = false;
             }
             if (flag) {
-                if (result == JOptionPane.OK_OPTION) {
                 System.out.println(nameFld.getText());
                 System.out.println(stockFld.getText());
                 System.out.println(priceFld.getText());
                 sqlite.addProduct(nameFld.getText(), Integer.parseInt(stockFld.getText()), Float.parseFloat(priceFld.getText()));
-            }
             }
             else {
             JOptionPane.showMessageDialog(null, "Invalid inputs");  
@@ -272,33 +296,28 @@ public class MgmtProduct extends javax.swing.JPanel {
             if (result == JOptionPane.OK_OPTION) {
                  ArrayList<Product> products = sqlite.getProduct();
                  
-                 //check if valid integer
-            
-                if (!QTY_pattern.matcher(stockFld.getText()).matches()){
+                 // if valid integer
+                if (!stock_pattern.matcher(stockFld.getText()).matches()){
                     flag = false;
                 }
-
-                // check if valid price 
+                // if valid price 
                 if (!price_pattern.matcher(priceFld.getText()).matches()){
                     flag = false;
                 }
-                // check if valid product name (whitelisting )
+                // if valid product name (whitelisting)
                 if (!prodName_pattern.matcher(nameFld.getText()).matches()){
                     flag = false;
                 }
                 if (flag) {
                     int id=0;
-                    for(int nCtr = 0; nCtr < products.size(); nCtr++){
-                        if (products.get(nCtr).getName().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString())) // check if username exists in the list
-                        {
+                    for(int nCtr = 0; nCtr < products.size(); nCtr++){ // Find name in the list
+                        if (products.get(nCtr).getName().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString())) {
                             id = products.get(nCtr).getId(); // if exists get the product id to be used for editing the product
                         }
-                        if (result == JOptionPane.OK_OPTION) {
-                            System.out.println(nameFld.getText());
-                            System.out.println(stockFld.getText());
-                            System.out.println(priceFld.getText());
-                            sqlite.editProduct(id, nameFld.getText(),Integer.parseInt(stockFld.getText()), Float.parseFloat(priceFld.getText()));
-                        }
+                        System.out.println(nameFld.getText());
+                        System.out.println(stockFld.getText());
+                        System.out.println(priceFld.getText());
+                        sqlite.editProduct(id, nameFld.getText(),Integer.parseInt(stockFld.getText()), Float.parseFloat(priceFld.getText()));
                     }
                 } 
                 else
