@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Main;
+import Model.User;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -208,6 +209,7 @@ public class Frame extends javax.swing.JFrame {
     public Login loginPnl = new Login();
     public Register registerPnl = new Register();
     
+    private User active;
     private AdminHome adminHomePnl = new AdminHome();
     private ManagerHome managerHomePnl = new ManagerHome();
     private StaffHome staffHomePnl = new StaffHome();
@@ -247,7 +249,7 @@ public class Frame extends javax.swing.JFrame {
         this.setVisible(true);
     }
     
-    public void mainNav(int role){
+    public void mainNav(int role, User user){
         
         adminBtn.setVisible(false);
         managerBtn.setVisible(false);
@@ -260,18 +262,24 @@ public class Frame extends javax.swing.JFrame {
                 break;
            case 2:
                 clientBtn.setVisible(true);
+                this.clientHomePnl.mgmtProduct.setActiveUser(user);
                 contentView.show(Content, "clientHomePnl");
                break;
            case 3:
                staffBtn.setVisible(true);
+               this.staffHomePnl.mgmtProduct.setActiveUser(user);
                contentView.show(Content, "staffHomePnl");
                break;
            case 4:
                managerBtn.setVisible(true);
+               this.managerHomePnl.mgmtProduct.setActiveUser(user);
+               this.managerHomePnl.mgmtUser.setActiveUser(user);
                contentView.show(Content, "managerHomePnl");
                break;
            case 5:
                adminBtn.setVisible(true);
+               this.adminHomePnl.mgmtUser.setActiveUser(user);
+               this.adminHomePnl.mgmtLogs.setActiveUser(user);
                contentView.show(Content, "adminHomePnl");
         }
         

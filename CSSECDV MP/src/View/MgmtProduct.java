@@ -14,8 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import java.util.regex.*;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;
 
@@ -28,10 +26,10 @@ public class MgmtProduct extends javax.swing.JPanel {
     public SQLite sqlite;
     public DefaultTableModel tableModel;
     private User active;
-    private static final Pattern stock_pattern = Pattern.compile("^[1-9]\\d*$");
-    private static final Pattern price_pattern= Pattern.compile("^(\\d)+(\\.\\d{1,2})*$");
+    private static final Pattern stockPattern = Pattern.compile("^[1-9]\\d*$");
+    private static final Pattern pricePattern = Pattern.compile("^(\\d)+(\\.\\d{1,2})*$");
+    private static final Pattern namePattern = Pattern.compile("^[a-zA-Z0-9\\s\\_\\-]+$");
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
-    private static final Pattern prodName_pattern= Pattern.compile("^[a-zA-Z0-9\\s\\_\\-]+$");
     
     public MgmtProduct(SQLite sqlite) {
         initComponents();
@@ -59,6 +57,7 @@ public class MgmtProduct extends javax.swing.JPanel {
                 products.get(nCtr).getName(), 
                 products.get(nCtr).getStock(), 
                 products.get(nCtr).getPrice()});
+                products.get(nCtr).getId();
         }
     }
     
@@ -186,7 +185,6 @@ public class MgmtProduct extends javax.swing.JPanel {
 
     private void purchaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseBtnActionPerformed
         int stock;
-        float price;
         
         if(table.getSelectedRow() >= 0){
             JTextField stockFld = new JTextField("0");
@@ -200,15 +198,13 @@ public class MgmtProduct extends javax.swing.JPanel {
 
             if (result == JOptionPane.OK_OPTION) {
                 System.out.println(stockFld.getText());
-                if(stock_pattern.matcher(stockFld.getText()).matches()) //check if valid format (positive integer)
+                if(stockPattern.matcher(stockFld.getText()).matches()) //check if valid format (positive integer)
                 {
                     stock = Integer.parseInt(stockFld.getText());
-                    price = Float.parseFloat(tableModel.getValueAt(table.getSelectedRow(), 2).toString());
-                    
                     if (stock <= Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 1).toString()) )
                     {
+                        JOptionPane.showMessageDialog(null,"successful purchase"); 
                         sqlite.subtractStock(tableModel.getValueAt(table.getSelectedRow(), 0).toString(), stock);
-                        
                         LocalDateTime now = LocalDateTime.now();  
                         sqlite.addHistory(this.active.getUsername(), tableModel.getValueAt(table.getSelectedRow(), 0).toString(), stock, dtf.format(now));
                         this.init();
@@ -221,7 +217,7 @@ public class MgmtProduct extends javax.swing.JPanel {
                 else
                 {
                     System.out.println("invalid format");
-                    JOptionPane.showMessageDialog(null,"invalid amount");  
+                    JOptionPane.showMessageDialog(null,"Invalid amount");  
                 }
             }
         }
@@ -250,18 +246,18 @@ public class MgmtProduct extends javax.swing.JPanel {
                 if (products.get(nCtr).getName().equalsIgnoreCase(nameFld.getText())){
                     flag = false;
                 }
-             }
+            }
 
-            // if valid integer
-            if (!stock_pattern.matcher(stockFld.getText()).matches()){
+            // if valid stock
+            if (!stockPattern.matcher(stockFld.getText()).matches()){
                 flag = false;
             }
             // if valid price 
-            if (!price_pattern.matcher(priceFld.getText()).matches()){
+            if (!pricePattern.matcher(priceFld.getText()).matches()){
                 flag = false;
             }
             // if valid product name (whitelisting )
-            if (!prodName_pattern.matcher(nameFld.getText()).matches()){
+            if (!namePattern.matcher(nameFld.getText()).matches()){
                 flag = false;
             }
             if (flag) {
@@ -269,6 +265,11 @@ public class MgmtProduct extends javax.swing.JPanel {
                 System.out.println(stockFld.getText());
                 System.out.println(priceFld.getText());
                 sqlite.addProduct(nameFld.getText(), Integer.parseInt(stockFld.getText()), Float.parseFloat(priceFld.getText()));
+                LocalDateTime now = LocalDateTime.now();  
+                sqlite.addLogs("NOTICE", this.active.getUsername(), "Added a new product", dtf.format(now));
+                
+                this.init();
+
             }
             else {
             JOptionPane.showMessageDialog(null, "Invalid inputs");  
@@ -296,29 +297,33 @@ public class MgmtProduct extends javax.swing.JPanel {
             if (result == JOptionPane.OK_OPTION) {
                  ArrayList<Product> products = sqlite.getProduct();
                  
-                 // if valid integer
-                if (!stock_pattern.matcher(stockFld.getText()).matches()){
+                 // if valid stock
+                if (!stockPattern.matcher(stockFld.getText()).matches()){
                     flag = false;
                 }
                 // if valid price 
-                if (!price_pattern.matcher(priceFld.getText()).matches()){
+                if (!pricePattern.matcher(priceFld.getText()).matches()){
                     flag = false;
                 }
                 // if valid product name (whitelisting)
-                if (!prodName_pattern.matcher(nameFld.getText()).matches()){
+                if (!namePattern.matcher(nameFld.getText()).matches()){
                     flag = false;
                 }
                 if (flag) {
-                    int id=0;
-                    for(int nCtr = 0; nCtr < products.size(); nCtr++){ // Find name in the list
+                    int id = 0;
+                    for(int nCtr = 0; nCtr < products.size(); nCtr++){
                         if (products.get(nCtr).getName().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString())) {
-                            id = products.get(nCtr).getId(); // if exists get the product id to be used for editing the product
+                            id = products.get(nCtr).getId(); // get the product id for editing
+                            System.out.println(nCtr);
                         }
-                        System.out.println(nameFld.getText());
-                        System.out.println(stockFld.getText());
-                        System.out.println(priceFld.getText());
-                        sqlite.editProduct(id, nameFld.getText(),Integer.parseInt(stockFld.getText()), Float.parseFloat(priceFld.getText()));
                     }
+                    System.out.println(nameFld.getText());
+                    System.out.println(stockFld.getText());
+                    System.out.println(priceFld.getText());
+                    sqlite.editProduct(id, nameFld.getText(), Integer.parseInt(stockFld.getText()), Float.parseFloat(priceFld.getText()));
+                    LocalDateTime now = LocalDateTime.now();
+                    sqlite.addLogs("NOTICE", this.active.getUsername(), "Edited product details", dtf.format(now));
+                    this.init();
                 } 
                 else
                 {
@@ -337,10 +342,19 @@ public class MgmtProduct extends javax.swing.JPanel {
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
                 sqlite.deleteProduct(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                JOptionPane.showMessageDialog(null, "item" + tableModel.getValueAt(table.getSelectedRow(), 0).toString()+ " has been deleted");
+                LocalDateTime now = LocalDateTime.now();
+                sqlite.addLogs("NOTICE", this.active.getUsername(), "Deleted a product", dtf.format(now));
+                this.init();
             }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
+    public void setActiveUser(User user)
+    {
+        this.active = user;
+    }
+    
     public void showClientBtn() {
         addBtn.setVisible(false);
         editBtn.setVisible(false);

@@ -5,6 +5,7 @@ import static Controller.Main.verifyPassword;
 import Controller.SQLite;
 import Model.User;
 import java.util.ArrayList;
+import View.MgmtProduct;
 
 public class Login extends javax.swing.JPanel {
 
@@ -162,14 +163,14 @@ public class Login extends javax.swing.JPanel {
         }
         else if (locks.get(index) > 3) {
             System.out.println("Locked out");
-            frame.mainNav(1);
+            frame.mainNav(1, users.get(index));
         }
         else {
             jLabel2.setVisible(false);
             
             if (verifyPassword(passwordFld.getText(), passwords.get(index))) {
                 //login
-                frame.mainNav(roles.get(index));
+                frame.mainNav(roles.get(index), users.get(index));
                 passwordFld.setText("");
                 usernameFld.setText(""); 
             }

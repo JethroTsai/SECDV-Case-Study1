@@ -7,6 +7,7 @@ package View;
 
 import Controller.SQLite;
 import Model.Logs;
+import Model.User;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,6 +19,8 @@ public class MgmtLogs extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
+    
+    private User active;
     
     public MgmtLogs(SQLite sqlite) {
         initComponents();
@@ -145,6 +148,10 @@ public class MgmtLogs extends javax.swing.JPanel {
             sqlite.DEBUG_MODE = 1;
     }//GEN-LAST:event_debugBtnActionPerformed
 
+    public void setActiveUser(User user)
+    {
+        this.active = user;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearBtn;
