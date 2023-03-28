@@ -7,6 +7,8 @@ package View;
 
 import Controller.SQLite;
 import Model.User;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -26,6 +28,7 @@ public class MgmtUser extends javax.swing.JPanel {
     public DefaultTableModel tableModel;
     
     private User active;
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
     
     public MgmtUser(SQLite sqlite) {
         initComponents();
@@ -203,6 +206,10 @@ public class MgmtUser extends javax.swing.JPanel {
             
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
+                sqlite.removeUser(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                LocalDateTime now = LocalDateTime.now();
+                sqlite.addLogs("NOTICE", this.active.getUsername(), "Edited product details", dtf.format(now));
+                this.init();
             }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
