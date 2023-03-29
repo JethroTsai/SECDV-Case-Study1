@@ -278,17 +278,25 @@ public class MgmtUser extends javax.swing.JPanel {
             int result = JOptionPane.showConfirmDialog(null, message, "CHANGE PASSWORD", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
             
             if (result == JOptionPane.OK_OPTION) {
-                System.out.println(password.getText());
-                System.out.println(confpass.getText());
-                System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
-                String new_password;
-                try {
-                    new_password = toHexString(getSHA(password.getText()));
-                    sqlite.updatePassword(new_password, String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)));
-                } catch (NoSuchAlgorithmException ex) {
-                    Logger.getLogger(MgmtUser.class.getName()).log(Level.SEVERE, null, ex);
+                
+                if(password.getText().equals(confpass.getText())) {
+                    System.out.println(password.getText());
+                    System.out.println(confpass.getText());
+                    System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
+                    String new_password;
+                    try {
+                        new_password = toHexString(getSHA(password.getText()));
+                        sqlite.updatePassword(new_password, String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)));
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(MgmtUser.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    this.init();
                 }
-                this.init();
+                
+                else {
+                    String message_error = "Error: Password does not match.";
+                    JOptionPane.showMessageDialog(null, message_error, "Popup Message", JOptionPane.PLAIN_MESSAGE);
+                }
             }
         }
     }//GEN-LAST:event_chgpassBtnActionPerformed
