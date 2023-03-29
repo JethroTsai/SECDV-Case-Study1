@@ -20,7 +20,6 @@ public class Register extends javax.swing.JPanel {
     public ArrayList<Integer> roles = new ArrayList<>();
     
     public Register() {
-        users = sqlite.getUsers();
         initComponents();
         
         String e = usernameFld.getText();
@@ -145,6 +144,7 @@ public class Register extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
+        users = sqlite.getUsers();
         frame.registerAction(usernameFld.getText(), passwordFld.getText(), confpassFld.getText());
         String username = usernameFld.getText();
         String lowerUsername = username.toLowerCase();
@@ -186,17 +186,12 @@ public class Register extends javax.swing.JPanel {
         if (upperFlag && lowerFlag && digitFlag && specialFlag) {
             try {
                 String hashedPassword = toHexString(getSHA(password));
-                sqlite.addUser(username, hashedPassword, 2);
+                sqlite.addUser(username, hashedPassword);
                 users = sqlite.getUsers();
-                //Login.usernames.add(username);
-                //Login.passwords.add(hashedPassword);
-                //Login.roles.add(2);
                 frame.loginNav();
                 confpassFld.setText("");
                 passwordFld.setText("");
                 usernameFld.setText("");
-                
-                sqlite.addUser(username, hashedPassword);
             }
             catch (NoSuchAlgorithmException e) {
             System.out.println("Exception thrown for incorrect algorithm: " + e);
