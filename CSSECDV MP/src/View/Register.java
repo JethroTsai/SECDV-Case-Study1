@@ -143,7 +143,6 @@ public class Register extends javax.swing.JPanel {
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
         users = sqlite.getUsers();
-        frame.registerAction(usernameFld.getText(), passwordFld.getText(), confpassFld.getText());
         String username = usernameFld.getText();
         String lowerUsername = username.toLowerCase();
         String password = passwordFld.getText();
