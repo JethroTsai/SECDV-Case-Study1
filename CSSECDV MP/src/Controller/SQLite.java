@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
+import static Controller.Main.getSHA;
+import static Controller.Main.toHexString;
+import java.security.NoSuchAlgorithmException;
 
 public class SQLite {
     
@@ -214,11 +217,13 @@ public class SQLite {
     }
         
     public void addUser(String username, String password) {
-        String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + password + "')";
-        
-        try (Connection conn = DriverManager.getConnection(driverURL);
-            Statement stmt = conn.createStatement()){
-            stmt.execute(sql);
+        try {
+            String hashedPassword = toHexString(getSHA(password));
+            String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + hashedPassword + "')";
+
+            try (Connection conn = DriverManager.getConnection(driverURL); 
+                 Statement stmt = conn.createStatement()) {
+                stmt.execute(sql);
             
 //      PREPARED STATEMENT EXAMPLE
 //      String sql = "INSERT INTO users(username,password) VALUES(?,?)";
@@ -226,8 +231,11 @@ public class SQLite {
 //      pstmt.setString(1, username);
 //      pstmt.setString(2, password);
 //      pstmt.executeUpdate();
-        } catch (Exception ex) {
-            System.out.print(ex);
+            } catch (Exception ex) {
+                System.out.print(ex);
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
     }
     
