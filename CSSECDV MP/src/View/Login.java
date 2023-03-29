@@ -21,7 +21,7 @@ public class Login extends javax.swing.JPanel {
     public ArrayList<Integer> locks = new ArrayList<>();
     public Login() {
         initComponents();
-        users = sqlite.getUsers();
+
         jLabel2.setVisible(false);
     }
 
