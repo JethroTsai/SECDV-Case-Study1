@@ -184,6 +184,7 @@ public class AdminHome extends javax.swing.JPanel {
 
     private void logsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logsBtnActionPerformed
         mgmtLogs.init();
+        mgmtLogs.hidedebugBtn();
         usersBtn.setForeground(Color.black);
         productsBtn.setForeground(Color.black);
         historyBtn.setForeground(Color.black);

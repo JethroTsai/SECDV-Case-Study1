@@ -154,6 +154,10 @@ public class MgmtLogs extends javax.swing.JPanel {
     {
         this.active = user;
     }
+    
+    public void hidedebugBtn() {
+        debugBtn.setVisible(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearBtn;
