@@ -2,6 +2,7 @@
 package View;
 
 import static Controller.Main.verifyPassword;
+import static Controller.Main.toHexString;
 import Controller.SQLite;
 import Model.User;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Login extends javax.swing.JPanel {
     public ArrayList<Integer> locks = new ArrayList<>();
     public Login() {
         initComponents();
-  
+        users = sqlite.getUsers();
         jLabel2.setVisible(false);
     }
 
@@ -152,12 +153,14 @@ public class Login extends javax.swing.JPanel {
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
             usernames.add(user.getUsername().toLowerCase());
+            System.out.println(user.getUsername().toLowerCase());
             passwords.add(user.getPassword());
             roles.add(user.getRole());
             locked.add(user.getLocked());
             locks.add(0);
         }
         int index = usernames.indexOf(usernameFld.getText().toLowerCase());
+        System.out.println("Index: " + index);
         
         // authentication
         if (!usernames.contains(usernameFld.getText().toLowerCase())){
@@ -176,7 +179,6 @@ public class Login extends javax.swing.JPanel {
         }
         else {
             jLabel2.setVisible(false);
-            
             if (verifyPassword(passwordFld.getText(), passwords.get(index))) {
                 //login
                 frame.mainNav(roles.get(index), users.get(index));
@@ -189,11 +191,11 @@ public class Login extends javax.swing.JPanel {
                 String p = passwordFld.getText();
                 System.out.println(p);
                 jLabel2.setVisible(true);
-                System.out.println("Before Locks: " + locks.get(index));
+                //System.out.println("Before Locks: " + locks.get(index));
                 locks.set(index, locks.get(index) + 1);
-                System.out.println("After Locks: " + locks.get(index));
+                //System.out.println("After Locks: " + locks.get(index));
             }
-        }           
+        }
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed

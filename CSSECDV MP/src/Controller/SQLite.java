@@ -219,7 +219,7 @@ public class SQLite {
     public void addUser(String username, String password) {
         try {
             String hashedPassword = toHexString(getSHA(password));
-            String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + hashedPassword + "')";
+            String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + password + "')";
 
             try (Connection conn = DriverManager.getConnection(driverURL); 
                  Statement stmt = conn.createStatement()) {
@@ -377,6 +377,18 @@ public class SQLite {
         try (Connection conn = DriverManager.getConnection(driverURL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {         
             pstmt.setInt(1, locked); 
+            pstmt.setString(2, username); 
+            pstmt.executeUpdate(); 
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+    
+    public void updatePassword (String password, String username) {
+        String sql = "UPDATE users SET password = ? WHERE username = ?";
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {         
+            pstmt.setString(1, password); 
             pstmt.setString(2, username); 
             pstmt.executeUpdate(); 
         } catch (Exception ex) {

@@ -5,11 +5,16 @@
  */
 package View;
 
+import static Controller.Main.getSHA;
+import static Controller.Main.toHexString;
 import Controller.SQLite;
 import Model.User;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -275,6 +280,15 @@ public class MgmtUser extends javax.swing.JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 System.out.println(password.getText());
                 System.out.println(confpass.getText());
+                System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
+                String new_password;
+                try {
+                    new_password = toHexString(getSHA(password.getText()));
+                    sqlite.updatePassword(new_password, String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)));
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(MgmtUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
         }
     }//GEN-LAST:event_chgpassBtnActionPerformed
