@@ -26,10 +26,6 @@ public class Register extends javax.swing.JPanel {
         
         String e = usernameFld.getText();
         System.out.println(e);
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            usernames.add(user.getUsername().toLowerCase());
-        }
         
         jLabel2.setVisible(false);
     }
@@ -157,6 +153,11 @@ public class Register extends javax.swing.JPanel {
         Boolean digitFlag = false;
         Boolean specialFlag = false;
         
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            usernames.add(user.getUsername().toLowerCase());
+        }
+        
         // authentication
         if (usernames.contains(lowerUsername)){
             //error message
@@ -172,7 +173,7 @@ public class Register extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "passwords do not match", "Invalid password", JOptionPane.INFORMATION_MESSAGE);
         }
         else {
-            for (int i=0; i < password.length(); i++ ) {
+            for (int i = 0; i < password.length(); i++ ) {
                 char c = password.charAt(i);
                 if(Character.isUpperCase(c)) 
                     upperFlag = true;
@@ -180,26 +181,28 @@ public class Register extends javax.swing.JPanel {
                     lowerFlag = true;
                 else if(Character.isDigit(c)) 
                     digitFlag = true;     
-                if((c >= 33 && c <= 47) || (c >= 58 && c <= 64) || (c >= 91 || c <= 96)){
+                else if((c >= 33 && c <= 47) || (c >= 58 && c <= 64) || (c >= 91 || c <= 96)){
                     specialFlag = true;
-                }                    
+                }
+            }
+            if (upperFlag && lowerFlag && digitFlag && specialFlag) {
+                try {
+                    String hashedPassword = toHexString(getSHA(password));
+                    sqlite.addUser(username, hashedPassword);
+                    sqlite.addLogs("NOTICE", username, "User creation successful", new Timestamp(new Date().getTime()).toString());
+                    users = sqlite.getUsers();
+                    frame.loginNav();
+                    confpassFld.setText("");
+                    passwordFld.setText("");
+                    usernameFld.setText("");
+                }
+                catch (NoSuchAlgorithmException e) {
+                System.out.println("Exception thrown for incorrect algorithm: " + e);
+                }
             }
         }
-        if (upperFlag && lowerFlag && digitFlag && specialFlag) {
-            try {
-                String hashedPassword = toHexString(getSHA(password));
-                sqlite.addUser(username, hashedPassword);
-                sqlite.addLogs("NOTICE", username, "User creation successful", new Timestamp(new Date().getTime()).toString());
-                users = sqlite.getUsers();
-                frame.loginNav();
-                confpassFld.setText("");
-                passwordFld.setText("");
-                usernameFld.setText("");
-            }
-            catch (NoSuchAlgorithmException e) {
-            System.out.println("Exception thrown for incorrect algorithm: " + e);
-            }
-        }
+        
+        if (upperFlag && lowerFlag && digitFlag && specialFlag) {}
         else if (usernames.contains(lowerUsername)) {}
         else {
             System.out.println("password does not follow the guidelines");
@@ -215,6 +218,7 @@ public class Register extends javax.swing.JPanel {
         confpassFld.setText("");
         passwordFld.setText("");
         usernameFld.setText("");
+        jLabel2.setVisible(false);
     }//GEN-LAST:event_backBtnActionPerformed
 
 

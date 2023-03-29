@@ -288,7 +288,7 @@ public class MgmtUser extends javax.swing.JPanel {
                 } catch (NoSuchAlgorithmException ex) {
                     Logger.getLogger(MgmtUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+                this.init();
             }
         }
     }//GEN-LAST:event_chgpassBtnActionPerformed

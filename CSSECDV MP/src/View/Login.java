@@ -13,12 +13,7 @@ public class Login extends javax.swing.JPanel {
 
     public Frame frame;
     public SQLite sqlite = new SQLite();
-    public ArrayList<User> users = new ArrayList<>();
-    public static ArrayList<String> usernames = new ArrayList<>();
-    public static ArrayList<String> passwords = new ArrayList<>();
-    public static ArrayList<Integer> roles = new ArrayList<>();
-    public static ArrayList<Integer> locked = new ArrayList<>();
-    public ArrayList<Integer> locks = new ArrayList<>();
+    
     public Login() {
         initComponents();
 
@@ -144,6 +139,14 @@ public class Login extends javax.swing.JPanel {
         jLabel2.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
+        
+        ArrayList<User> users = new ArrayList<>();
+        ArrayList<String> usernames = new ArrayList<>();
+        ArrayList<String> passwords = new ArrayList<>();
+        ArrayList<Integer> roles = new ArrayList<>();
+        ArrayList<Integer> locked = new ArrayList<>();
+        ArrayList<Integer> locks = new ArrayList<>();
+        
         users = sqlite.getUsers();
         
         String e = usernameFld.getText();

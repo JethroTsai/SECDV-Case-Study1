@@ -54,7 +54,8 @@ public class Main {
 
     public static boolean verifyPassword(String password, String hashedPassword) {
         try {
-            if (toHexString(getSHA(password)).equals(hashedPassword)){
+            String pass = toHexString(getSHA(password));
+            if (pass.equals(hashedPassword)){
                 return true;
             }
             return false;
