@@ -8,6 +8,7 @@ package View;
 import Controller.SQLite;
 import Model.History;
 import Model.Product;
+import Model.User;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -21,6 +22,7 @@ public class MgmtHistory extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
+    private User active;
     
     public MgmtHistory(SQLite sqlite) {
         initComponents();
@@ -45,8 +47,9 @@ public class MgmtHistory extends javax.swing.JPanel {
             tableModel.removeRow(0);
         }
         
-//      LOAD CONTENTS
-        ArrayList<History> history = sqlite.getHistory();
+        if(this.active.getRole() != 4) {
+        //      LOAD CONTENTS
+        ArrayList<History> history = sqlite.getHistory(this.active.getUsername());
         for(int nCtr = 0; nCtr < history.size(); nCtr++){
             Product product = sqlite.getProduct(history.get(nCtr).getName());
             tableModel.addRow(new Object[]{
@@ -58,8 +61,25 @@ public class MgmtHistory extends javax.swing.JPanel {
                 history.get(nCtr).getTimestamp()
             });
         }
+        }
+        
+        else {
+            //      LOAD CONTENTS
+            ArrayList<History> history = sqlite.getHistory();
+            for (int nCtr = 0; nCtr < history.size(); nCtr++) {
+                Product product = sqlite.getProduct(history.get(nCtr).getName());
+                tableModel.addRow(new Object[]{
+                    history.get(nCtr).getUsername(),
+                    history.get(nCtr).getName(),
+                    history.get(nCtr).getStock(),
+                    product.getPrice(),
+                    product.getPrice() * history.get(nCtr).getStock(),
+                    history.get(nCtr).getTimestamp()
+                });
+            }
+        }
     }
-    
+        
     public void designer(JTextField component, String text){
         component.setSize(70, 600);
         component.setFont(new java.awt.Font("Tahoma", 0, 18));
@@ -200,6 +220,9 @@ public class MgmtHistory extends javax.swing.JPanel {
         init();
     }//GEN-LAST:event_reloadBtnActionPerformed
 
+    public void setActiveUser(User user) {
+        this.active = user;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

@@ -263,6 +263,7 @@ public class Frame extends javax.swing.JFrame {
            case 2:
                 clientBtn.setVisible(true);
                 this.clientHomePnl.mgmtProduct.setActiveUser(user);
+                this.clientHomePnl.mgmtHistory.setActiveUser(user);
                 contentView.show(Content, "clientHomePnl");
                break;
            case 3:
@@ -274,6 +275,7 @@ public class Frame extends javax.swing.JFrame {
                managerBtn.setVisible(true);
                this.managerHomePnl.mgmtProduct.setActiveUser(user);
                this.managerHomePnl.mgmtUser.setActiveUser(user);
+               this.managerHomePnl.mgmtHistory.setActiveUser(user);
                contentView.show(Content, "managerHomePnl");
                break;
            case 5:
