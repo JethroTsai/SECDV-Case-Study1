@@ -371,4 +371,16 @@ public class SQLite {
             System.out.print(ex);
         }
     }
+    
+    public void updateLocked (int locked, String username) {
+        String sql = "UPDATE users SET locked = ? WHERE username = ?";
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {         
+            pstmt.setInt(1, locked); 
+            pstmt.setString(2, username); 
+            pstmt.executeUpdate(); 
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
 }
