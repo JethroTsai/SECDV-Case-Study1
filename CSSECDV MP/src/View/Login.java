@@ -6,17 +6,18 @@ import Controller.SQLite;
 import Model.User;
 import java.util.ArrayList;
 import View.MgmtProduct;
+import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JPanel {
 
     public Frame frame;
     public SQLite sqlite = new SQLite();
-    public ArrayList<User> users = sqlite.getUsers();
+    public ArrayList<User> users = new ArrayList<>();
     public static ArrayList<String> usernames = new ArrayList<>();
     public static ArrayList<String> passwords = new ArrayList<>();
     public static ArrayList<Integer> roles = new ArrayList<>();
+    public static ArrayList<Integer> locked = new ArrayList<>();
     public ArrayList<Integer> locks = new ArrayList<>();
-    
     public Login() {
         initComponents();
   
@@ -142,6 +143,8 @@ public class Login extends javax.swing.JPanel {
         jLabel2.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
+        users = sqlite.getUsers();
+        
         String e = usernameFld.getText();
         System.out.println(e);
         
@@ -151,7 +154,8 @@ public class Login extends javax.swing.JPanel {
             usernames.add(user.getUsername().toLowerCase());
             passwords.add(user.getPassword());
             roles.add(user.getRole());
-            locks.add(user.getLocked());
+            locked.add(user.getLocked());
+            locks.add(0);
         }
         int index = usernames.indexOf(usernameFld.getText().toLowerCase());
         
@@ -161,9 +165,14 @@ public class Login extends javax.swing.JPanel {
             System.out.println("Login failed; Invalid user ID or password");
             jLabel2.setVisible(true);
         }
-        else if (locks.get(index) > 3) {
+        else if (locks.get(index) > 3 || locked.get(index) == 1) {
             System.out.println("Locked out");
-            frame.mainNav(1, users.get(index));
+            //frame.mainNav(1, users.get(index));
+            sqlite.updateLocked(1, usernameFld.getText());
+            sqlite.updateRole(1, usernameFld.getText());
+            String message_locked = "Account Locked: Please contact an Admin to re-enable your account.";
+            JOptionPane.showMessageDialog(null, message_locked, "Popup Message", JOptionPane.PLAIN_MESSAGE);
+            locks.set(index, 0);
         }
         else {
             jLabel2.setVisible(false);
@@ -177,6 +186,8 @@ public class Login extends javax.swing.JPanel {
             else {
                 // error message    
                 System.out.println("Login failed; Invalid user ID or password");
+                String p = passwordFld.getText();
+                System.out.println(p);
                 jLabel2.setVisible(true);
                 System.out.println("Before Locks: " + locks.get(index));
                 locks.set(index, locks.get(index) + 1);

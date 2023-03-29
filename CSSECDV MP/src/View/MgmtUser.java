@@ -233,15 +233,27 @@ public class MgmtUser extends javax.swing.JPanel {
     private void lockBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lockBtnActionPerformed
         if(table.getSelectedRow() >= 0){
             int state = 1;
+            String s = "lock";
             if("1".equals(tableModel.getValueAt(table.getSelectedRow(), 3) + "")){
                 state = 0;
+                s = "unclock";
             }
             
-            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to " + state + " " + tableModel.getValueAt(table.getSelectedRow(), 0) + "?", "DELETE USER", JOptionPane.YES_NO_OPTION);
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to " + s + " " + tableModel.getValueAt(table.getSelectedRow(), 0) + "?", "DELETE USER", JOptionPane.YES_NO_OPTION);
             
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
                 sqlite.updateLocked(state, String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)));
+                
+                // If user is unlocked (and was disabled) change back role to default. (Must manually be changed back to original role by the admin, if role is not the default role)
+                if(state == 0) { 
+                    sqlite.updateRole(2, String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)));
+                }
+                // If locked, change user role to disabled
+                else {
+                    sqlite.updateRole(1, String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)));
+                }
+                
                 this.init();
             }
         }
