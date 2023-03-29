@@ -6,7 +6,9 @@ import static Controller.Main.toHexString;
 import Controller.SQLite;
 import Model.User;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 
@@ -187,6 +189,7 @@ public class Register extends javax.swing.JPanel {
             try {
                 String hashedPassword = toHexString(getSHA(password));
                 sqlite.addUser(username, hashedPassword);
+                sqlite.addLogs("NOTICE", username, "User creation successful", new Timestamp(new Date().getTime()).toString());
                 users = sqlite.getUsers();
                 frame.loginNav();
                 confpassFld.setText("");
