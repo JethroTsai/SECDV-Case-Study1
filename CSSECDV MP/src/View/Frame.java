@@ -214,7 +214,7 @@ public class Frame extends javax.swing.JFrame {
     private ManagerHome managerHomePnl = new ManagerHome();
     private StaffHome staffHomePnl = new StaffHome();
     private ClientHome clientHomePnl = new ClientHome();
-    private Home disabledHomePnl = new Home("Disabled", Color.RED);
+    //private Home disabledHomePnl = new Home("Disabled", Color.RED);
     
     private CardLayout contentView = new CardLayout();
     private CardLayout frameView = new CardLayout();
@@ -244,7 +244,7 @@ public class Frame extends javax.swing.JFrame {
         Content.add(managerHomePnl, "managerHomePnl");
         Content.add(staffHomePnl, "staffHomePnl");
         Content.add(clientHomePnl, "clientHomePnl");
-        Content.add(disabledHomePnl, "disabledHomePnl");
+        //Content.add(disabledHomePnl, "disabledHomePnl");
             
         this.setVisible(true);
     }
@@ -257,9 +257,9 @@ public class Frame extends javax.swing.JFrame {
         clientBtn.setVisible(false);
         
         switch(role) {
-            case 1:
-                contentView.show(Content, "disabledHomePnl");
-                break;
+            //case 1:
+            //    contentView.show(Content, "disabledHomePnl");
+            //    break;
            case 2:
                 clientBtn.setVisible(true);
                 this.clientHomePnl.mgmtProduct.setActiveUser(user);
