@@ -185,19 +185,14 @@ public class Register extends javax.swing.JPanel {
                 }
             }
             if (upperFlag && lowerFlag && digitFlag && specialFlag) {
-                try {
-                    String hashedPassword = toHexString(getSHA(password));
-                    sqlite.addUser(username, hashedPassword);
+                
+                    sqlite.addUser(username, password);
                     sqlite.addLogs("NOTICE", username, "User creation successful", new Timestamp(new Date().getTime()).toString());
                     users = sqlite.getUsers();
                     frame.loginNav();
                     confpassFld.setText("");
                     passwordFld.setText("");
                     usernameFld.setText("");
-                }
-                catch (NoSuchAlgorithmException e) {
-                System.out.println("Exception thrown for incorrect algorithm: " + e);
-                }
             }
         }
         
