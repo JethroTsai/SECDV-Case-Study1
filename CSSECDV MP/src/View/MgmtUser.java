@@ -210,7 +210,7 @@ public class MgmtUser extends javax.swing.JPanel {
                     System.out.println(result.charAt(0));
                     int r = Character.getNumericValue(result.charAt(0));
                     sqlite.updateRole(r, String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)));
-                    init();
+                    this.init();
                 }
             }
         }
