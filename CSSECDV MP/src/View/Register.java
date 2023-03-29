@@ -14,12 +14,13 @@ public class Register extends javax.swing.JPanel {
 
     public Frame frame;
     public SQLite sqlite = new SQLite();
-    public ArrayList<User> users = sqlite.getUsers();
+    public ArrayList<User> users = new ArrayList<>();
     public ArrayList<String> usernames = new ArrayList<>();
     public ArrayList<String> passwords = new ArrayList<>();
     public ArrayList<Integer> roles = new ArrayList<>();
     
     public Register() {
+        users = sqlite.getUsers();
         initComponents();
         
         String e = usernameFld.getText();
@@ -187,13 +188,15 @@ public class Register extends javax.swing.JPanel {
                 String hashedPassword = toHexString(getSHA(password));
                 sqlite.addUser(username, hashedPassword, 2);
                 users = sqlite.getUsers();
-                Login.usernames.add(username);
-                Login.passwords.add(hashedPassword);
-                Login.roles.add(2);
+                //Login.usernames.add(username);
+                //Login.passwords.add(hashedPassword);
+                //Login.roles.add(2);
                 frame.loginNav();
                 confpassFld.setText("");
                 passwordFld.setText("");
                 usernameFld.setText("");
+                
+                sqlite.addUser(username, hashedPassword);
             }
             catch (NoSuchAlgorithmException e) {
             System.out.println("Exception thrown for incorrect algorithm: " + e);

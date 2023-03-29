@@ -58,7 +58,6 @@
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="passwordFld" min="-2" pref="59" max="-2" attributes="0"/>
@@ -186,9 +185,6 @@
         <Component class="javax.swing.JTextArea" name="jTextArea1">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f2" green="f2" red="f2" type="rgb"/>
-            </Property>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
             <Property name="text" type="java.lang.String" value="Password must be:&#xa;- at least 11 characters long&#xa;- have at least:&#xa;  - 1 uppercase character&#xa;  - 1 lowercase character&#xa;  - 1 special character (!@$#%_=)&#xa;  - 1 number"/>
