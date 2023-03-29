@@ -30,6 +30,8 @@ public class MgmtUser extends javax.swing.JPanel {
     private User active;
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
     
+    private ArrayList<User> users;
+    
     public MgmtUser(SQLite sqlite) {
         initComponents();
         this.sqlite = sqlite;
@@ -185,17 +187,31 @@ public class MgmtUser extends javax.swing.JPanel {
 
     private void editRoleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editRoleBtnActionPerformed
         if(table.getSelectedRow() >= 0){
-            String[] options = {"1-DISABLED","2-CLIENT","3-STAFF","4-MANAGER","5-ADMIN"};
-            JComboBox optionList = new JComboBox(options);
+            int currentRole = Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 2).toString());
             
-            optionList.setSelectedIndex((int)tableModel.getValueAt(table.getSelectedRow(), 2) - 1);
+            // Check if chosen user role is admin
+            if(currentRole == 5) {
+                    String error_admin = "Error: Cannot change admin role";
+                    System.out.println(error_admin);
+                    JOptionPane.showMessageDialog(null, error_admin, "Popup Message", JOptionPane.PLAIN_MESSAGE);
+            }
             
-            String result = (String) JOptionPane.showInputDialog(null, "USER: " + tableModel.getValueAt(table.getSelectedRow(), 0), 
-                "EDIT USER ROLE", JOptionPane.QUESTION_MESSAGE, null, options, options[(int)tableModel.getValueAt(table.getSelectedRow(), 2) - 1]);
-            
-            if(result != null){
-                System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
-                System.out.println(result.charAt(0));
+            else {
+                String[] options = {"1-DISABLED", "2-CLIENT", "3-STAFF", "4-MANAGER", "5-ADMIN"};
+                JComboBox optionList = new JComboBox(options);
+
+                optionList.setSelectedIndex((int) tableModel.getValueAt(table.getSelectedRow(), 2) - 1);
+
+                String result = (String) JOptionPane.showInputDialog(null, "USER: " + tableModel.getValueAt(table.getSelectedRow(), 0),
+                        "EDIT USER ROLE", JOptionPane.QUESTION_MESSAGE, null, options, options[(int) tableModel.getValueAt(table.getSelectedRow(), 2) - 1]);
+
+                if (result != null) {
+                    System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
+                    System.out.println(result.charAt(0));
+                    int r = Character.getNumericValue(result.charAt(0));
+                    sqlite.updateRole(r, String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)));
+                    init();
+                }
             }
         }
     }//GEN-LAST:event_editRoleBtnActionPerformed

@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.sql.PreparedStatement;
 
 public class SQLite {
     
@@ -349,5 +350,17 @@ public class SQLite {
             System.out.print(ex);
         }
         return product;
+    }
+    
+    public void updateRole (int role, String username) {
+        String sql = "UPDATE users SET role = ? WHERE username = ?";
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {         
+            pstmt.setInt(1, role); 
+            pstmt.setString(2, username); 
+            pstmt.executeUpdate(); 
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
     }
 }
