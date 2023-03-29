@@ -395,4 +395,14 @@ public class SQLite {
             System.out.print(ex);
         }
     }
+    
+    public void deleteAllLogs() {
+    String sql = "DELETE FROM logs";
+    try (Connection conn = DriverManager.getConnection(driverURL);
+         Statement stmt = conn.createStatement()){
+        stmt.execute(sql);
+    } catch (Exception ex) {
+        System.out.print(ex);
+    }
+}
 }
