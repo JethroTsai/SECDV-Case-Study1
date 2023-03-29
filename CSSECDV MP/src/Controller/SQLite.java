@@ -219,7 +219,7 @@ public class SQLite {
     public void addUser(String username, String password) {
         try {
             String hashedPassword = toHexString(getSHA(password));
-            String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + password + "')";
+            String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + hashedPassword + "')";
 
             try (Connection conn = DriverManager.getConnection(driverURL); 
                  Statement stmt = conn.createStatement()) {
